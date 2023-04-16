@@ -5,5 +5,5 @@
 
 
 namespace render {
-	auto init() -> void;
+    auto init() -> void;
 }
