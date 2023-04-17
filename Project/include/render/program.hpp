@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <GL/glew.h>
 
+#include "math.hpp"
 #include "render/shader.hpp"
 
 
@@ -28,6 +29,13 @@ namespace render {
 
 
         [[nodiscard]] auto attribute(GLchar const* name) const noexcept -> GLint;
+
+        auto uniform(GLchar const* name, math::vec2 const& value) const noexcept -> void;
+        auto uniform(GLchar const* name, math::vec3 const& value) const noexcept -> void;
+        auto uniform(GLchar const* name, math::vec4 const& value) const noexcept -> void;
+        auto uniform(GLchar const* name, math::mat2 const& value) const noexcept -> void;
+        auto uniform(GLchar const* name, math::mat3 const& value) const noexcept -> void;
+        auto uniform(GLchar const* name, math::mat4 const& value) const noexcept -> void;
 
 
     private:

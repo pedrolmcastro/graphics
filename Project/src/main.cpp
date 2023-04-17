@@ -1,6 +1,8 @@
+#include <iostream>
+
 #include "math.hpp"
-#include "render/init.hpp"
 #include "render/shader.hpp"
+#include "render/command.hpp"
 #include "render/program.hpp"
 #include "windows/window.hpp"
 
@@ -16,10 +18,42 @@ auto main() -> int {
     };
 
 
-    math::vec2 vertices[] = {
-        { - 0.5f, - 0.5f },
-        { + 0.5f, - 0.5f },
-        { + 0.0f, + 0.5f },
+    math::vec3 vertices[] = {
+        // 1° Face
+        { - 0.2f, - 0.2f, + 0.2f },
+        { + 0.2f, - 0.2f, + 0.2f },
+        { - 0.2f, + 0.2f, + 0.2f },
+        { + 0.2f, + 0.2f, + 0.2f },
+
+        // 2° Face
+        { + 0.2f, - 0.2f, + 0.2f },
+        { + 0.2f, - 0.2f, - 0.2f },
+        { + 0.2f, + 0.2f, + 0.2f },
+        { + 0.2f, + 0.2f, - 0.2f },
+
+        // 3° Face
+        { + 0.2f, - 0.2f, - 0.2f },
+        { - 0.2f, - 0.2f, - 0.2f },
+        { + 0.2f, + 0.2f, - 0.2f },
+        { - 0.2f, + 0.2f, - 0.2f },
+
+        // 4° Face
+        { - 0.2f, - 0.2f, - 0.2f },
+        { - 0.2f, - 0.2f, + 0.2f },
+        { - 0.2f, + 0.2f, - 0.2f },
+        { - 0.2f, + 0.2f, + 0.2f },
+
+        // 5° Face
+        { - 0.2f, - 0.2f, - 0.2f },
+        { + 0.2f, - 0.2f, - 0.2f },
+        { - 0.2f, - 0.2f, + 0.2f },
+        { + 0.2f, - 0.2f, + 0.2f },
+
+        // 6° Face
+        { - 0.2f, + 0.2f, + 0.2f },
+        { + 0.2f, + 0.2f, + 0.2f },
+        { - 0.2f, + 0.2f, - 0.2f },
+        { + 0.2f, + 0.2f, - 0.2f }
     };
 
     auto buffer = GLuint{0};
@@ -29,13 +63,39 @@ auto main() -> int {
 
     auto location = program.attribute("position");
     glEnableVertexAttribArray(location);
-    glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), nullptr);
+    glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), nullptr);
 
 
-    window.run([]{
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    auto angle = 0.0f;
+    auto offset = 0.0f;
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+    window.run([=]() mutable {
+        render::clear({ 0.2f, 0.2f, 0.2f });
+
+        angle += 0.01f;
+        offset += 0.001f;
+
+        auto transform = math::translate(math::vec3{offset});
+        transform = math::rotate(transform, angle, math::vec3{1.0f, 1.0f, 1.0f});
+        program.uniform("transform", transform);
+
+
+        program.uniform("color", math::vec3{1.0, 0.0, 0.0});
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        program.uniform("color", math::vec3{0.0, 0.0, 1.0});
+        glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+
+        program.uniform("color", math::vec3{0.0, 1.0, 0.0});
+        glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
+
+        program.uniform("color", math::vec3{1.0, 1.0, 0.0});
+        glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
+
+        program.uniform("color", math::vec3{0.5, 0.5, 0.5});
+        glDrawArrays(GL_TRIANGLE_STRIP, 16, 4);
+
+        program.uniform("color", math::vec3{0.5, 0.0, 0.0});
+        glDrawArrays(GL_TRIANGLE_STRIP, 20, 4);
     });
 }
