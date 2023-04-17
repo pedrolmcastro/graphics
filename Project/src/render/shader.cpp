@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 
 #include <string>
+#include <vector>
 #include <fstream>
 #include <streambuf>
 #include <stdexcept>
@@ -11,6 +12,9 @@
 
 namespace render {
     auto Shader::compile(GLenum type, GLchar const* source) -> GLuint {
+        using namespace std::string_literals;
+
+
         auto code = glCreateShader(type);
 
         if (code == 0) {
@@ -29,12 +33,13 @@ namespace render {
             auto length = GLint{0};
             glGetShaderiv(code, GL_INFO_LOG_LENGTH, &length);
 
-            std::basic_string<GLchar> message;
+            std::vector<GLchar> message;
             message.reserve(length + 1);
             glGetShaderInfoLog(code, length, nullptr, message.data());
 
-            throw std::runtime_error{"Shader compilation failed: " + message};
+            throw std::runtime_error{"Shader compilation failed: "s + message.data()};
         }
+
 
         return code;
     }
