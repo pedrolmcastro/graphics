@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "math.hpp"
+#include "color.hpp"
 #include "render/shader.hpp"
 #include "render/command.hpp"
 #include "render/program.hpp"
@@ -70,7 +71,7 @@ auto main() -> int {
     auto transform = object::Transform{};
 
     window.run([program, &transform]() {
-        render::clear({ 0.2f, 0.2f, 0.2f });
+        render::clear(color::BLACK);
 
 
         transform.scale += 0.001f;
@@ -80,22 +81,22 @@ auto main() -> int {
         program.uniform("transform", object::transform(transform));
 
 
-        program.uniform("color", math::vec3{1.0, 0.0, 0.0});
+        program.uniform("color", color::RED);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-        program.uniform("color", math::vec3{0.0, 0.0, 1.0});
+        program.uniform("color", color::BLUE);
         glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
 
-        program.uniform("color", math::vec3{0.0, 1.0, 0.0});
+        program.uniform("color", color::CYAN);
         glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
 
-        program.uniform("color", math::vec3{1.0, 1.0, 0.0});
+        program.uniform("color", color::GREEN);
         glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
 
-        program.uniform("color", math::vec3{0.5, 0.5, 0.5});
+        program.uniform("color", color::YELLOW);
         glDrawArrays(GL_TRIANGLE_STRIP, 16, 4);
 
-        program.uniform("color", math::vec3{0.5, 0.0, 0.0});
+        program.uniform("color", color::MAGENTA);
         glDrawArrays(GL_TRIANGLE_STRIP, 20, 4);
     });
 }
