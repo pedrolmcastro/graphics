@@ -5,6 +5,7 @@
 #include "render/command.hpp"
 #include "render/program.hpp"
 #include "windows/window.hpp"
+#include "object/transform.hpp"
 
 
 auto main() -> int {
@@ -66,18 +67,17 @@ auto main() -> int {
     glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), nullptr);
 
 
-    auto angle = 0.0f;
-    auto offset = 0.0f;
+    auto transform = object::Transform{};
 
-    window.run([=]() mutable {
+    window.run([program, &transform]() {
         render::clear({ 0.2f, 0.2f, 0.2f });
 
-        angle += 0.01f;
-        offset += 0.001f;
 
-        auto transform = math::translate(math::vec3{offset});
-        transform = math::rotate(transform, angle, math::vec3{1.0f, 1.0f, 1.0f});
-        program.uniform("transform", transform);
+        transform.scale += 0.001f;
+        transform.rotation += 0.01f;
+        transform.translation.x += 0.001f;
+
+        program.uniform("transform", object::transform(transform));
 
 
         program.uniform("color", math::vec3{1.0, 0.0, 0.0});
