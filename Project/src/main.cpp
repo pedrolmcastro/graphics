@@ -3,6 +3,7 @@
 #include "math.hpp"
 #include "color.hpp"
 #include "render/shader.hpp"
+#include "render/vertex.hpp"
 #include "render/command.hpp"
 #include "render/program.hpp"
 #include "windows/window.hpp"
@@ -22,7 +23,9 @@ auto main() -> int {
     };
 
 
-    math::vec3 vertices[] = {
+    auto vertex = render::Vertex{};
+
+    vertex.attribute(program.location("a_Position"), {
         { - 0.1f, - 0.1f, - 0.1f }, // 0
         { - 0.1f, - 0.1f, + 0.1f }, // 1
         { - 0.1f, + 0.1f, - 0.1f }, // 2
@@ -31,9 +34,9 @@ auto main() -> int {
         { + 0.1f, - 0.1f, + 0.1f }, // 5
         { + 0.1f, + 0.1f, - 0.1f }, // 6
         { + 0.1f, + 0.1f, + 0.1f }, // 7
-    };
+    });
 
-    math::uvec3 indices[] = {
+    vertex.indices({
         // Front
         {0, 4, 6},
         {6, 2, 0},
@@ -57,55 +60,34 @@ auto main() -> int {
         // Bottom
         {1, 5, 4},
         {4, 0, 1},
-    };
-
-
-    auto array = GLuint{0};
-    glGenVertexArrays(1, &array);
-    glBindVertexArray(array);
-
-    auto buffer = GLuint{0};
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    auto location = program.attribute("a_Position");
-    glEnableVertexAttribArray(location);
-    glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
-
-    auto elements = GLuint{0};
-    glGenBuffers(1, &elements);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elements);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
+    });
 
 
     auto transform = object::Transform{};
 
-    window.run([program, array, &transform](windows::Timestep) {
+    window.run([program, vertex, &transform](windows::Timestep step) {
         render::clear(color::BLACK);
 
-        transform.rotation += 0.01f;
+        transform.rotation += step.count();
         program.uniform("u_Transform", object::transform(transform));
 
 
-        glBindVertexArray(array);
-
         program.uniform("u_Color", color::RED);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        vertex.draw(2);
 
         program.uniform("u_Color", color::MAGENTA);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(6 * sizeof(GLuint)));
+        vertex.draw(2, 2);
 
         program.uniform("u_Color", color::GREEN);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(12 * sizeof(GLuint)));
+        vertex.draw(2, 4);
 
         program.uniform("u_Color", color::YELLOW);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(18 * sizeof(GLuint)));
+        vertex.draw(2, 6);
 
         program.uniform("u_Color", color::BLUE);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(24 * sizeof(GLuint)));
+        vertex.draw(2, 8);
 
         program.uniform("u_Color", color::CYAN);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(30 * sizeof(GLuint)));
+        vertex.draw(2, 10);
     });
 }

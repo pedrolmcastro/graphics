@@ -10,7 +10,7 @@ namespace render {
     }
 
 
-    auto Program::attribute(GLchar const* name) const noexcept -> GLint {
+    auto Program::location(GLchar const* name) const noexcept -> GLint {
         return glGetAttribLocation(code, name);
     }
 

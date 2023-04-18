@@ -1,6 +1,3 @@
-#version 330
-
-
 uniform vec3 u_Color;
 
 void main() {

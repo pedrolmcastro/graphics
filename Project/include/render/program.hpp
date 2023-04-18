@@ -28,7 +28,7 @@ namespace render {
         ~Program() noexcept;
 
 
-        [[nodiscard]] auto attribute(GLchar const* name) const noexcept -> GLint;
+        [[nodiscard]] auto location(GLchar const* name) const noexcept -> GLint;
 
         auto uniform(GLchar const* name, math::vec2 const& value) const noexcept -> void;
         auto uniform(GLchar const* name, math::vec3 const& value) const noexcept -> void;
