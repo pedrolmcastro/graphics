@@ -72,7 +72,8 @@ auto main() -> int {
 
     auto transform = object::Transform{};
 
-    window.run([program, &transform]() {
+    window.run([program, &transform](windows::Timestep step) {
+        std::cout << step.count() << 's' << std::endl;
         render::clear(color::BLACK);
 
 

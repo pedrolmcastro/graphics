@@ -4,6 +4,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <chrono>
 #include <memory>
 #include <utility>
 #include <functional>
@@ -12,12 +13,15 @@
 
 
 namespace windows {
+    using Timestep = std::chrono::duration<float>;
+
+
     // Facade for GLFWwindow
     class Window final {
     public:
         Window(char const* name, math::ivec2 const& size);
 
-        auto run(std::function<void()> const& update) const -> void;
+        auto run(std::function<void(Timestep)> const& update) const -> void;
 
 
         auto onresize(std::function<void(math::ivec2 const&)> callback) noexcept -> void;

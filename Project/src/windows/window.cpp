@@ -1,6 +1,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <chrono>
 #include <memory>
 #include <utility>
 #include <functional>
@@ -35,10 +36,18 @@ namespace windows {
     }
 
 
-    auto Window::run(std::function<void()> const& update) const -> void {
+    auto Window::run(std::function<void(Timestep)> const& update) const -> void {
+        auto lastframe = std::chrono::steady_clock::now();
+
         while (not glfwWindowShouldClose(base.get())) {
             glfwPollEvents();
-            update();
+
+            auto now = std::chrono::steady_clock::now();
+            auto step = Timestep{now - lastframe};
+            lastframe = now;
+
+            update(step);
+
             glfwSwapBuffers(base.get());
         }
     }
