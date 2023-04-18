@@ -2,30 +2,39 @@ CXX := g++
 LDLIBS += -lglfw -lGL -lGLEW -lm
 CXXFLAGS += -std=c++2a -MMD -MP -Iinclude -Ivendor/glm -Wall -Werror -pedantic
 
-BIN := bin/main.out
+BND := bin
+BIN := $(BND)/main.out
 SRC := $(shell find src -name *.cpp)
-OBJ := $(patsubst src/%.cpp, obj/%.o, $(SRC))
-DEP := $(patsubst src/%.cpp, obj/%.d, $(SRC))
+OBD := obj
+OBJ := $(patsubst src/%.cpp, $(OBD)/%.o, $(SRC))
+DEP := $(patsubst src/%.cpp, $(OBD)/%.d, $(SRC))
 
 
-$(BIN) : $(OBJ)
+$(BIN) : $(OBJ) | $(BND)/
+	@printf "CC %s -> %s\n" "$^" "$@"
 	@$(CXX) $^ -o $@ $(LDLIBS)
 
 obj/%.o : src/%.cpp
-	@mkdir -p $(dir $@)
+	@$(MAKE) -s $(dir $@)
+	@printf "CC %s -> %s\n" $< $@
 	@$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-run: $(BIN)
+run: $(BIN) 
 	@$(BIN)
 
 dep:
 	@apt install g++ mesa-common-dev libglew-dev libglfw3-dev
+	git submodule init
+	git submodule update --recursive
 
+%/:
+	@printf "MKDIR %s\n" $@
+	@mkdir -p $@
 
 clean:
-	@$(RM) $(OBJ) $(DEP) $(BIN)
+	@$(RM) -rf $(OBD) $(BND)
 
-.PHONY : clean
+.PHONY : clean dep run dir
 
 
--include $(DEP)
+# -include $(DEP)
