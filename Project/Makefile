@@ -23,7 +23,7 @@ run: $(BIN)
 	@$(BIN)
 
 dep:
-	@apt install g++ mesa-common-dev libglew-dev libglfw3-dev
+	@sudo apt install g++ mesa-common-dev libglew-dev libglfw3-dev
 	git submodule init
 	git submodule update --recursive
 
@@ -37,4 +37,4 @@ clean:
 .PHONY : clean dep run dir
 
 
-# -include $(DEP)
+-include $(DEP)
