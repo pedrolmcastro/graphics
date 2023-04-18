@@ -8,6 +8,7 @@ namespace color {
     Color const CYAN    = {0.2f, 0.8f, 0.8f};
     Color const BLACK   = {0.1f, 0.1f, 0.1f};
     Color const GREEN   = {0.2f, 0.8f, 0.2f};
+    Color const WHITE   = {0.8f, 0.8f, 0.8f};
     Color const ORANGE  = {0.8f, 0.5f, 0.2f};
     Color const PURPLE  = {0.5f, 0.2f, 0.8f};
     Color const YELLOW  = {0.8f, 0.8f, 0.2f};

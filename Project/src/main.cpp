@@ -20,16 +20,19 @@ auto main() -> int {
     };
 
 
+    auto outline = object::Outline{};
+
     auto tetrahedron = object::Tetrahedron{};
     tetrahedron.transform.translation.x -= 0.5f;
 
     auto cube = object::Cube{};
+    cube.transform.translation.y += 0.5f;
+
+    auto hexagonal = object::Hexagonal{};
+    hexagonal.transform.translation.y -= 0.5f;
 
     auto octahedron = object::Octahedron{};
     octahedron.transform.translation.x += 0.5f;
-
-    auto hexagonal = object::Hexagonal{};
-    hexagonal.transform.translation.y += 0.5f;
 
 
     window.run([&, program](windows::Timestep step) {
@@ -41,6 +44,7 @@ auto main() -> int {
         tetrahedron.transform.rotation += step.count();
 
         cube.draw(program);
+        outline.draw(program);
         hexagonal.draw(program);
         octahedron.draw(program);
         tetrahedron.draw(program);

@@ -3,6 +3,7 @@
 
 #include "object/cube.hpp"
 #include "object/shape.hpp"
+#include "object/outline.hpp"
 #include "object/hexagonal.hpp"
 #include "object/transform.hpp"
 #include "object/octahedron.hpp"
