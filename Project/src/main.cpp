@@ -28,15 +28,20 @@ auto main() -> int {
     auto octahedron = object::Octahedron{};
     octahedron.transform.translation.x += 0.5f;
 
+    auto hexagonal = object::Hexagonal{};
+    hexagonal.transform.translation.y += 0.5f;
+
 
     window.run([&, program](windows::Timestep step) {
         render::clear(color::BLACK);
 
         cube.transform.rotation += step.count();
+        hexagonal.transform.rotation += step.count();
         octahedron.transform.rotation += step.count();
         tetrahedron.transform.rotation += step.count();
 
         cube.draw(program);
+        hexagonal.draw(program);
         octahedron.draw(program);
         tetrahedron.draw(program);
     });
