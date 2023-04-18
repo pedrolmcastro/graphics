@@ -20,20 +20,24 @@ auto main() -> int {
     };
 
 
-    auto first = object::Cube{};
-    first.transform.translation.x -= 0.5f;
+    auto tetrahedron = object::Tetrahedron{};
+    tetrahedron.transform.translation.x -= 0.5f;
 
-    auto second = object::Octahedron{};
-    second.transform.translation.x += 0.5f;
+    auto cube = object::Cube{};
+
+    auto octahedron = object::Octahedron{};
+    octahedron.transform.translation.x += 0.5f;
 
 
-    window.run([program, &first, &second](windows::Timestep step) {
+    window.run([&, program](windows::Timestep step) {
         render::clear(color::BLACK);
 
-        first.transform.rotation += step.count();
-        first.draw(program);
+        cube.transform.rotation += step.count();
+        octahedron.transform.rotation += step.count();
+        tetrahedron.transform.rotation += step.count();
 
-        second.transform.rotation += step.count();
-        second.draw(program);
+        cube.draw(program);
+        octahedron.draw(program);
+        tetrahedron.draw(program);
     });
 }
