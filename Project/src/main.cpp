@@ -2,12 +2,9 @@
 
 #include "math.hpp"
 #include "color.hpp"
-#include "render/shader.hpp"
-#include "render/vertex.hpp"
-#include "render/command.hpp"
-#include "render/program.hpp"
-#include "windows/window.hpp"
-#include "object/transform.hpp"
+#include "object.hpp"
+#include "render.hpp"
+#include "windows.hpp"
 
 
 auto main() -> int {
