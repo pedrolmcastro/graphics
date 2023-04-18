@@ -7,7 +7,7 @@
 namespace object {
     struct Transform final {
         float scale = 1.0f;
-        math::vec3 rotation;
+        math::vec3 rotation; // Euler angles
         math::vec3 translation;
     };
 

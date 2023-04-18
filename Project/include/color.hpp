@@ -5,11 +5,13 @@
 
 
 namespace color {
-    extern math::vec3 const RED;
-    extern math::vec3 const BLUE;
-    extern math::vec3 const CYAN;
-    extern math::vec3 const BLACK;
-    extern math::vec3 const GREEN;
-    extern math::vec3 const YELLOW;
-    extern math::vec3 const MAGENTA;
+    using Color = math::vec3;
+
+    extern Color const RED;
+    extern Color const BLUE;
+    extern Color const CYAN;
+    extern Color const BLACK;
+    extern Color const GREEN;
+    extern Color const YELLOW;
+    extern Color const MAGENTA;
 }
