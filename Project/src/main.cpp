@@ -23,7 +23,7 @@ auto main() -> int {
     auto first = object::Cube{};
     first.transform.translation.x -= 0.5f;
 
-    auto second = object::Cube{};
+    auto second = object::Octahedron{};
     second.transform.translation.x += 0.5f;
 
 

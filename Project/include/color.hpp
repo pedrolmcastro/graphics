@@ -12,6 +12,8 @@ namespace color {
     extern Color const CYAN;
     extern Color const BLACK;
     extern Color const GREEN;
+    extern Color const ORANGE;
+    extern Color const PURPLE;
     extern Color const YELLOW;
     extern Color const MAGENTA;
 }
