@@ -23,82 +23,89 @@ auto main() -> int {
 
 
     math::vec3 vertices[] = {
-        // 1° Face
-        { - 0.2f, - 0.2f, + 0.2f },
-        { + 0.2f, - 0.2f, + 0.2f },
-        { - 0.2f, + 0.2f, + 0.2f },
-        { + 0.2f, + 0.2f, + 0.2f },
-
-        // 2° Face
-        { + 0.2f, - 0.2f, + 0.2f },
-        { + 0.2f, - 0.2f, - 0.2f },
-        { + 0.2f, + 0.2f, + 0.2f },
-        { + 0.2f, + 0.2f, - 0.2f },
-
-        // 3° Face
-        { + 0.2f, - 0.2f, - 0.2f },
-        { - 0.2f, - 0.2f, - 0.2f },
-        { + 0.2f, + 0.2f, - 0.2f },
-        { - 0.2f, + 0.2f, - 0.2f },
-
-        // 4° Face
-        { - 0.2f, - 0.2f, - 0.2f },
-        { - 0.2f, - 0.2f, + 0.2f },
-        { - 0.2f, + 0.2f, - 0.2f },
-        { - 0.2f, + 0.2f, + 0.2f },
-
-        // 5° Face
-        { - 0.2f, - 0.2f, - 0.2f },
-        { + 0.2f, - 0.2f, - 0.2f },
-        { - 0.2f, - 0.2f, + 0.2f },
-        { + 0.2f, - 0.2f, + 0.2f },
-
-        // 6° Face
-        { - 0.2f, + 0.2f, + 0.2f },
-        { + 0.2f, + 0.2f, + 0.2f },
-        { - 0.2f, + 0.2f, - 0.2f },
-        { + 0.2f, + 0.2f, - 0.2f }
+        { - 0.1f, - 0.1f, - 0.1f }, // 0
+        { - 0.1f, - 0.1f, + 0.1f }, // 1
+        { - 0.1f, + 0.1f, - 0.1f }, // 2
+        { - 0.1f, + 0.1f, + 0.1f }, // 3
+        { + 0.1f, - 0.1f, - 0.1f }, // 4
+        { + 0.1f, - 0.1f, + 0.1f }, // 5
+        { + 0.1f, + 0.1f, - 0.1f }, // 6
+        { + 0.1f, + 0.1f, + 0.1f }, // 7
     };
+
+    math::uvec3 indices[] = {
+        // Front
+        {0, 4, 6},
+        {6, 2, 0},
+
+        // Back
+        {5, 1, 3},
+        {3, 7, 5},
+
+        // Right
+        {4, 5, 7},
+        {7, 6, 4},
+
+        // Left
+        {1, 0, 2},
+        {2, 3, 1},
+
+        // Top
+        {2, 6, 7},
+        {7, 3, 2},
+
+        // Bottom
+        {1, 5, 4},
+        {4, 0, 1},
+    };
+
+
+    auto array = GLuint{0};
+    glGenVertexArrays(1, &array);
+    glBindVertexArray(array);
 
     auto buffer = GLuint{0};
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    auto location = program.attribute("a_osition");
+    auto location = program.attribute("a_Position");
     glEnableVertexAttribArray(location);
-    glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), nullptr);
+    glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+
+    auto elements = GLuint{0};
+    glGenBuffers(1, &elements);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elements);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
 
     auto transform = object::Transform{};
 
-    window.run([program, &transform](windows::Timestep) {
+    window.run([program, array, &transform](windows::Timestep) {
         render::clear(color::BLACK);
 
-
-        transform.scale += 0.001f;
         transform.rotation += 0.01f;
-        transform.translation.x += 0.001f;
-
         program.uniform("u_Transform", object::transform(transform));
 
 
+        glBindVertexArray(array);
+
         program.uniform("u_Color", color::RED);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-        program.uniform("u_Color", color::BLUE);
-        glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
-
-        program.uniform("u_Color", color::CYAN);
-        glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
-
-        program.uniform("u_Color", color::GREEN);
-        glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
-
-        program.uniform("u_Color", color::YELLOW);
-        glDrawArrays(GL_TRIANGLE_STRIP, 16, 4);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         program.uniform("u_Color", color::MAGENTA);
-        glDrawArrays(GL_TRIANGLE_STRIP, 20, 4);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(6 * sizeof(GLuint)));
+
+        program.uniform("u_Color", color::GREEN);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(12 * sizeof(GLuint)));
+
+        program.uniform("u_Color", color::YELLOW);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(18 * sizeof(GLuint)));
+
+        program.uniform("u_Color", color::BLUE);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(24 * sizeof(GLuint)));
+
+        program.uniform("u_Color", color::CYAN);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void const*>(30 * sizeof(GLuint)));
     });
 }
