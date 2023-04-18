@@ -24,4 +24,9 @@ namespace render {
         glClearColor(color.r, color.g, color.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
+
+
+    auto viewport(math::ivec2 const& size) noexcept -> void {
+        glViewport(0, 0, size.x, size.y);
+    }
 }

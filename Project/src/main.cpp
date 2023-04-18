@@ -11,7 +11,9 @@
 
 auto main() -> int {
     auto window = windows::Window{"Window", {500, 500}};
+
     render::init();
+    window.onresize(render::viewport);
 
 
     auto program = render::Program{
