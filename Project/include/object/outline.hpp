@@ -8,7 +8,7 @@
 
 namespace object {
     struct Outline final {
-        // Singleton for the outline vertex arrays
+        // Singleton that assumes the existence of "a_Position", "u_Transform" and "u_Color" in the shaders
         class Drawer;
 
 
@@ -17,7 +17,6 @@ namespace object {
         color::Color background = color::BLACK;
 
 
-        // This function assumes the existence of "a_Position", "u_Transform" and "u_Color" in the shaders
         auto draw(render::Program const& program) const -> void;
     };
 }

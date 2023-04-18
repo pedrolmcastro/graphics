@@ -13,7 +13,7 @@
 
 namespace object {
     namespace hexagonal {
-        // Singleton for the hexagonal prism vertex arrays
+        // Singleton that assumes the existence of "a_Position", "u_Transform" and "u_Color" in the shaders
         class Drawer final {
         public:
             static auto get(render::Program const& program) -> Drawer&;
@@ -23,8 +23,6 @@ namespace object {
                 return COLORS.size();
             }
 
-
-            // This function assumes the existence of "a_Position", "u_Transform" and "u_Color" in the shaders
             auto draw(Transform const& transform) const -> void;
 
 
