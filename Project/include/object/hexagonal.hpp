@@ -16,7 +16,7 @@ namespace object {
         // Singleton for the hexagonal prism vertex arrays
         class Drawer final {
         public:
-            static auto get(render::Program const& program) noexcept -> Drawer&;
+            static auto get(render::Program const& program) -> Drawer&;
 
 
             [[nodiscard]] constexpr auto sides() const noexcept -> std::size_t {
@@ -29,11 +29,11 @@ namespace object {
 
 
         private:
-            Drawer(render::Program const& program) noexcept;
+            Drawer(render::Program const& program);
             Drawer(Drawer const&) = delete;
 
 
-            render::Vertex vertex;
+            render::Vertex vertex = {12, 20};
             std::reference_wrapper<render::Program const> program;
 
             std::array<color::Color, 8> const COLORS = {

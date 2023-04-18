@@ -10,7 +10,7 @@
 
 
 namespace object::octahedron {
-    Drawer::Drawer(render::Program const& program) noexcept : program{program} {
+    Drawer::Drawer(render::Program const& program) : program{program} {
         vertex.attribute(program.location("a_Position"), {
             { + 0.0f, + 0.1f, + 0.0f }, // 0
             { - 0.1f, + 0.0f, - 0.1f }, // 1
@@ -22,20 +22,20 @@ namespace object::octahedron {
 
         vertex.indices({
             // Top
-            {1, 3, 0}, // Front
-            {4, 2, 0}, // Back
-            {3, 4, 0}, // Right
-            {2, 1, 0}, // Left
+            { 1, 3, 0 }, // Front
+            { 4, 2, 0 }, // Back
+            { 3, 4, 0 }, // Right
+            { 2, 1, 0 }, // Left
 
             // Bottom
-            {5, 3, 1}, // Front
-            {5, 2, 4}, // Back
-            {5, 4, 3}, // Right
-            {5, 1, 2}, // Left
+            { 5, 3, 1 }, // Front
+            { 5, 2, 4 }, // Back
+            { 5, 4, 3 }, // Right
+            { 5, 1, 2 }, // Left
         });
     }
 
-    auto Drawer::get(render::Program const& program) noexcept -> Drawer& {
+    auto Drawer::get(render::Program const& program) -> Drawer& {
         static auto instance = Drawer{program};
         return instance;
     }

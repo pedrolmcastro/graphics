@@ -9,7 +9,7 @@
 
 
 namespace object::tetrahedron {
-    Drawer::Drawer(render::Program const& program) noexcept : program{program} {
+    Drawer::Drawer(render::Program const& program) : program{program} {
         vertex.attribute(program.location("a_Position"), {
             { - 0.1f, - 0.1f, + 0.1f }, // 0
             { - 0.1f, + 0.1f, - 0.1f }, // 1
@@ -25,7 +25,7 @@ namespace object::tetrahedron {
         });
     }
 
-    auto Drawer::get(render::Program const& program) noexcept -> Drawer& {
+    auto Drawer::get(render::Program const& program) -> Drawer& {
         static auto instance = Drawer{program};
         return instance;
     }

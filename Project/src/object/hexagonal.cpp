@@ -10,7 +10,7 @@
 
 
 namespace object::hexagonal {
-    Drawer::Drawer(render::Program const& program) noexcept : program{program} {
+    Drawer::Drawer(render::Program const& program) : program{program} {
         vertex.attribute(program.location("a_Position"), {
             // Top
             { - 0.10f, + 0.1f, + 0.0f }, // 0
@@ -68,7 +68,7 @@ namespace object::hexagonal {
         });
     }
 
-    auto Drawer::get(render::Program const& program) noexcept -> Drawer& {
+    auto Drawer::get(render::Program const& program) -> Drawer& {
         static auto instance = Drawer{program};
         return instance;
     }
