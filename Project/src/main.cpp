@@ -65,15 +65,14 @@ auto main() -> int {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    auto location = program.attribute("position");
+    auto location = program.attribute("a_osition");
     glEnableVertexAttribArray(location);
     glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), nullptr);
 
 
     auto transform = object::Transform{};
 
-    window.run([program, &transform](windows::Timestep step) {
-        std::cout << step.count() << 's' << std::endl;
+    window.run([program, &transform](windows::Timestep) {
         render::clear(color::BLACK);
 
 
@@ -81,25 +80,25 @@ auto main() -> int {
         transform.rotation += 0.01f;
         transform.translation.x += 0.001f;
 
-        program.uniform("transform", object::transform(transform));
+        program.uniform("u_Transform", object::transform(transform));
 
 
-        program.uniform("color", color::RED);
+        program.uniform("u_Color", color::RED);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-        program.uniform("color", color::BLUE);
+        program.uniform("u_Color", color::BLUE);
         glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
 
-        program.uniform("color", color::CYAN);
+        program.uniform("u_Color", color::CYAN);
         glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
 
-        program.uniform("color", color::GREEN);
+        program.uniform("u_Color", color::GREEN);
         glDrawArrays(GL_TRIANGLE_STRIP, 12, 4);
 
-        program.uniform("color", color::YELLOW);
+        program.uniform("u_Color", color::YELLOW);
         glDrawArrays(GL_TRIANGLE_STRIP, 16, 4);
 
-        program.uniform("color", color::MAGENTA);
+        program.uniform("u_Color", color::MAGENTA);
         glDrawArrays(GL_TRIANGLE_STRIP, 20, 4);
     });
 }
