@@ -26,7 +26,11 @@ namespace windows {
 
         auto onresize(std::function<void(math::ivec2 const&)> callback) noexcept -> void;
 
-        auto iskeypressed(int key) noexcept -> bool;
+
+        [[nodiscard]] auto iskeypressed(int key) const noexcept -> bool;
+        [[nodiscard]] auto ismousepressed(int button) const noexcept -> bool;
+
+        [[nodiscard]] auto cursor() const noexcept -> math::vec2;
 
 
         [[nodiscard]] auto width() const noexcept -> int;

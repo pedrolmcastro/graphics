@@ -57,9 +57,21 @@ namespace windows {
         resize = std::move(callback);
     }
 
-    auto Window::iskeypressed(int key) noexcept -> bool {
+
+    auto Window::iskeypressed(int key) const noexcept -> bool {
         auto state = glfwGetKey(base.get(), key);
         return state == GLFW_PRESS;
+    }
+
+    auto Window::ismousepressed(int button) const noexcept -> bool {
+        auto state = glfwGetMouseButton(base.get(), button);
+        return state == GLFW_PRESS;
+    }
+
+    auto Window::cursor() const noexcept -> math::vec2 {
+        double x, y;
+        glfwGetCursorPos(base.get(), &x, &y);
+        return math::vec2{x, y};
     }
 
 
