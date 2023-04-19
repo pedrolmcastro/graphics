@@ -15,6 +15,16 @@
 namespace windows {
     using Timestep = std::chrono::duration<float>;
 
+    // TODO: Maybe move this enum to a more appropriate namespace
+    enum class MouseButton : int {
+        left = GLFW_MOUSE_BUTTON_LEFT,
+        right = GLFW_MOUSE_BUTTON_RIGHT,
+    };
+
+    enum class ButtonState : int {
+        press = GLFW_PRESS,
+        release = GLFW_RELEASE,
+    };
 
     // Facade for GLFWwindow
     class Window final {
@@ -32,6 +42,8 @@ namespace windows {
 
         [[nodiscard]] auto size() const noexcept -> math::ivec2;
 
+        [[nodiscard]] auto cursor() const noexcept -> math::vec2;
+        [[nodiscard]] auto mouse_button(MouseButton button) const -> ButtonState;
 
     private:
         std::function<void(math::ivec2 const&)> resize;

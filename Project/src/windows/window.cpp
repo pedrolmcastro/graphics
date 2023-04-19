@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <functional>
+#include <stdexcept>
 
 #include "math.hpp"
 #include "windows/state.hpp"
@@ -70,5 +71,20 @@ namespace windows {
 
     auto Window::height() const noexcept -> int {
         return size().y;
+    }
+
+    auto Window::cursor() const noexcept -> math::vec2 {
+        double xpos, ypos;
+        glfwGetCursorPos(base.get(), &xpos, &ypos);
+        return {xpos, ypos};
+    }
+
+    auto Window::mouse_button(MouseButton button) const -> ButtonState {
+        int state = glfwGetMouseButton(base.get(), static_cast<int>(button));
+        switch (state) {
+            case GLFW_PRESS: return ButtonState::press;
+            case GLFW_RELEASE: return ButtonState::release;
+            default: throw std::runtime_error("invalid mouse button state");
+        }
     }
 }
