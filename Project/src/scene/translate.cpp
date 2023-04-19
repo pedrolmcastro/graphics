@@ -15,16 +15,16 @@ namespace scene {
         translatable.rotation() += step.count();
 
         if (window.iskeypressed(GLFW_KEY_UP)) {
-            translatable.translation().y += step.count() * 1.0f;
+            translatable.translation().y += step.count();
         }
         if (window.iskeypressed(GLFW_KEY_DOWN)) {
-            translatable.translation().y -= step.count() * 1.0f;
+            translatable.translation().y -= step.count();
         }
         if (window.iskeypressed(GLFW_KEY_RIGHT)) {
-            translatable.translation().x += step.count() * 1.0f;
+            translatable.translation().x += step.count();
         }
         if (window.iskeypressed(GLFW_KEY_LEFT)) {
-            translatable.translation().x -= step.count() * 1.0f;
+            translatable.translation().x -= step.count();
         }
 
         translatable.draw();

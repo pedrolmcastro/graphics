@@ -5,34 +5,27 @@
 #include <utility>
 #include <variant>
 
-#include "scene/concept.hpp"
+#include "scene/scale.hpp"
+#include "scene/rotate.hpp"
 #include "windows/window.hpp"
+#include "scene/translate.hpp"
 
 
 namespace scene {
-    template<Scene ... Types> class Scenes final {
+    using Variant = std::variant<scene::Scale, scene::Translate, scene::Rotate>;
+    using Array = std::array<Variant, std::variant_size_v<Variant>>;
+
+
+    class Scenes final {
     public:
-        Scenes(windows::Window& window) : window{window}, scenes{(Types{} , ...)} {
-            std::visit([this](auto& scene) { scene.start(this->window); }, scenes[0]);
-        }
+        Scenes(windows::Window& window, Array scenes);
 
-
-        auto update(windows::Timestep step) -> void {
-            if (current >= scenes.size()) {
-                return;
-            }
-
-            if (std::visit([this, step](auto& scene) { return scene.update(this->window, step); }, scenes[current])) {
-                if (++current < scenes.size()) {
-                    std::visit([this](auto& scene) { scene.start(this->window); }, scenes[current]);
-                }
-            }
-        }
+        auto update(windows::Timestep step) -> void;
 
 
     private:
+        Array scenes;
         std::size_t current = 0;
         std::reference_wrapper<windows::Window> window;
-        std::array<std::variant<Types ...>, sizeof...(Types)> scenes;
     };
 }
