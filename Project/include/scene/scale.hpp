@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include "scene/concept.hpp"
 #include "object/outline.hpp"
 #include "windows/window.hpp"
 #include "object/hexagonal.hpp"
@@ -18,4 +19,7 @@ namespace scene {
         object::Outline target;
         object::Hexagonal scalable = {{ .scale = 2.0f }};
     };
+
+
+    static_assert(Scene<Scale>);
 }
