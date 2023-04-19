@@ -5,37 +5,42 @@
 
 
 namespace render {
+    Program::Program(GLuint code) : code{code} {
+        if (code == 0) {
+            throw std::runtime_error{"Failed to create OpenGL program"};
+        }
+    }
+
     Program::~Program() noexcept {
         glDeleteProgram(code);
     }
 
-
-    auto Program::location(GLchar const* name) const noexcept -> GLint {
-        return glGetAttribLocation(code, name);
+    auto Program::get() -> Program& {
+        static auto instance = Program{glCreateProgram()};
+        return instance;
     }
 
 
-    auto Program::uniform(GLchar const* name, math::vec2 const& value) const noexcept -> void {
-        glUniform2fv(glGetUniformLocation(code, name), 1, math::value_ptr(value));
+    auto Program::shader(Shader&& shader) noexcept -> void {
+        glAttachShader(get().code, shader.code);
     }
 
-    auto Program::uniform(GLchar const* name, math::vec3 const& value) const noexcept -> void {
-        glUniform3fv(glGetUniformLocation(code, name), 1, math::value_ptr(value));
+    auto Program::use() noexcept -> void {
+        glLinkProgram(get().code);
+        glUseProgram(get().code);
     }
 
-    auto Program::uniform(GLchar const* name, math::vec4 const& value) const noexcept -> void {
-        glUniform4fv(glGetUniformLocation(code, name), 1, math::value_ptr(value));
+
+    auto Program::location(GLchar const* name) noexcept -> GLint {
+        return glGetAttribLocation(get().code, name);
     }
 
-    auto Program::uniform(GLchar const* name, math::mat2 const& value) const noexcept -> void {
-        glUniformMatrix2fv(glGetUniformLocation(code, name), 1, GL_FALSE, math::value_ptr(value));
+
+    auto Program::uniform(GLchar const* name, math::vec3 const& value) noexcept -> void {
+        glUniform3fv(glGetUniformLocation(get().code, name), 1, math::value_ptr(value));
     }
 
-    auto Program::uniform(GLchar const* name, math::mat3 const& value) const noexcept -> void {
-        glUniformMatrix3fv(glGetUniformLocation(code, name), 1, GL_FALSE, math::value_ptr(value));
-    }
-
-    auto Program::uniform(GLchar const* name, math::mat4 const& value) const noexcept -> void {
-        glUniformMatrix4fv(glGetUniformLocation(code, name), 1, GL_FALSE, math::value_ptr(value));
+    auto Program::uniform(GLchar const* name, math::mat4 const& value) noexcept -> void {
+        glUniformMatrix4fv(glGetUniformLocation(get().code, name), 1, GL_FALSE, math::value_ptr(value));
     }
 }

@@ -10,8 +10,8 @@
 
 
 namespace object::hexagonal {
-    Drawer::Drawer(render::Program const& program) : program{program} {
-        vertex.attribute(program.location("a_Position"), {
+    Drawer::Drawer() {
+        vertex.attribute(render::Program::location("a_Position"), {
             // Top
             { - 0.10f, + 0.1f, + 0.0f }, // 0
             { - 0.05f, + 0.1f, - 0.1f }, // 1
@@ -68,29 +68,33 @@ namespace object::hexagonal {
         });
     }
 
-    auto Drawer::get(render::Program const& program) -> Drawer& {
-        static auto instance = Drawer{program};
+    auto Drawer::get() -> Drawer& {
+        static auto instance = Drawer{};
         return instance;
     }
 
 
-    auto Drawer::draw(Transform const& transform) const -> void {
-        program.get().uniform("u_Transform", object::transform(transform));
+    auto Drawer::sides() noexcept -> std::size_t {
+        return get().colors.size();
+    }
+
+    auto Drawer::draw(Transform const& transform) -> void {
+        render::Program::uniform("u_Transform", object::transform(transform));
 
         auto offset = GLuint{0};
         auto side = 0UL;
 
         // Sides
         for (side = 0UL; side < sides() - 2UL; ++side) {
-            program.get().uniform("u_Color", colors[side]);
-            vertex.triangles(2, offset);
+            render::Program::uniform("u_Color", get().colors[side]);
+            get().vertex.triangles(2, offset);
             offset += 2;
         }
 
         // Top and Bottom
         for (; side < sides(); ++side) {
-            program.get().uniform("u_Color", colors[side]);
-            vertex.triangles(4, offset);
+            render::Program::uniform("u_Color", get().colors[side]);
+            get().vertex.triangles(4, offset);
             offset += 4;
         }
     }

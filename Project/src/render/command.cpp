@@ -1,22 +1,31 @@
+#include <GL/glew.h>
+
 #include <mutex>
 #include <stdexcept>
-#include <GL/glew.h>
+#include <filesystem>
 
 #include "math.hpp"
 #include "render/command.hpp"
+#include "render/program.hpp"
 
 
 namespace render {
-    auto init() -> void {
+    auto init(std::filesystem::path const& vertex, std::filesystem::path const& fragment) -> void {
         static auto flag = std::once_flag{};
 
-        std::call_once(flag, []{
+        std::call_once(flag, [&]{
             if (glewInit() != GLEW_OK) {
                 throw std::runtime_error{"Failed to init GLEW"};
             }
-        });
 
-        glEnable(GL_DEPTH_TEST);
+            glEnable(GL_DEPTH_TEST);
+
+
+            Program::shader({GL_VERTEX_SHADER, vertex});
+            Program::shader({GL_FRAGMENT_SHADER, fragment});
+
+            Program::use();
+        });
     }
 
 

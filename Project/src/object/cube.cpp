@@ -9,8 +9,8 @@
 
 
 namespace object::cube {
-    Drawer::Drawer(render::Program const& program) : program{program} {
-        vertex.attribute(program.location("a_Position"), {
+    Drawer::Drawer() {
+        vertex.attribute(render::Program::location("a_Position"), {
             { - 0.1f, - 0.1f, - 0.1f }, // 0
             { - 0.1f, - 0.1f, + 0.1f }, // 1
             { - 0.1f, + 0.1f, - 0.1f }, // 2
@@ -48,18 +48,22 @@ namespace object::cube {
         });
     }
 
-    auto Drawer::get(render::Program const& program) -> Drawer& {
-        static auto instance = Drawer{program};
+    auto Drawer::get() -> Drawer& {
+        static auto instance = Drawer{};
         return instance;
     }
 
 
-    auto Drawer::draw(Transform const& transform) const -> void {
-        program.get().uniform("u_Transform", object::transform(transform));
+    auto Drawer::sides() noexcept -> std::size_t {
+        return get().colors.size();
+    }
+
+    auto Drawer::draw(Transform const& transform) -> void {
+        render::Program::uniform("u_Transform", object::transform(transform));
 
         for (auto i = 0UL; i < sides(); ++i) {
-            program.get().uniform("u_Color", colors[i]);
-            vertex.triangles(2, i * 2);
+            render::Program::uniform("u_Color", get().colors[i]);
+            get().vertex.triangles(2, i * 2);
         }
     }
 }

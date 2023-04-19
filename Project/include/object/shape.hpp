@@ -10,8 +10,8 @@ namespace object {
         Transform transform;
 
 
-        auto draw(render::Program const& program) const -> void {
-            Drawer::get(program).draw(transform);
+        auto draw() const -> void {
+            Drawer::draw(transform);
         }
 
 

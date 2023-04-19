@@ -1,44 +1,40 @@
 #pragma once
 
 
-#include <concepts>
-#include <stdexcept>
 #include <GL/glew.h>
+#include <filesystem>
 
 #include "math.hpp"
 #include "render/shader.hpp"
 
 
 namespace render {
+    // Singleton facade for OpenGL program
     class Program final {
     public:
-        Program(std::same_as<Shader> auto&& ... shaders) {
-            code = glCreateProgram();
+        friend auto init(std::filesystem::path const& vertex, std::filesystem::path const& fragment) -> void;
 
-            if (code == 0) {
-                std::runtime_error{"Failed to create OpenGL program"};
-            }
 
-            (glAttachShader(code, shaders.code) , ...);
-
-            glLinkProgram(code);
-            glUseProgram(code);
-        }
+        static auto get() -> Program&;
 
         ~Program() noexcept;
 
 
-        [[nodiscard]] auto location(GLchar const* name) const noexcept -> GLint;
+        [[nodiscard]] static auto location(GLchar const* name) noexcept -> GLint;
 
-        auto uniform(GLchar const* name, math::vec2 const& value) const noexcept -> void;
-        auto uniform(GLchar const* name, math::vec3 const& value) const noexcept -> void;
-        auto uniform(GLchar const* name, math::vec4 const& value) const noexcept -> void;
-        auto uniform(GLchar const* name, math::mat2 const& value) const noexcept -> void;
-        auto uniform(GLchar const* name, math::mat3 const& value) const noexcept -> void;
-        auto uniform(GLchar const* name, math::mat4 const& value) const noexcept -> void;
+        static auto uniform(GLchar const* name, math::vec3 const& value) noexcept -> void;
+        static auto uniform(GLchar const* name, math::mat4 const& value) noexcept -> void;
 
 
     private:
+        Program(GLuint code);
+        Program(Program const&) = delete;
+
+
+        static auto use() noexcept -> void;
+        static auto shader(Shader&& shader) noexcept -> void;
+
+
         GLuint code = 0;
     };
 }

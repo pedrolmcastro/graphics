@@ -11,7 +11,7 @@
 
 
 namespace render {
-    // Facade for OpenGL Vertex Array Object
+    // Facade for OpenGL vertex array object
     class Vertex final {
     public:
         Vertex(GLuint vertices, GLuint elements) noexcept;
