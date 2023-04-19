@@ -29,7 +29,7 @@ namespace object::hexagonal {
             { + 0.10f, - 0.1f, + 0.0f }, // 11
         });
 
-        vertex.indices({
+        vertex.indices(std::initializer_list<math::uvec3>{
             // Front
             {  7,  9,  3 },
             {  3,  1,  7 },
@@ -82,15 +82,15 @@ namespace object::hexagonal {
 
         // Sides
         for (side = 0UL; side < sides() - 2UL; ++side) {
-            program.get().uniform("u_Color", COLORS[side]);
-            vertex.draw(2, offset);
+            program.get().uniform("u_Color", colors[side]);
+            vertex.triangles(2, offset);
             offset += 2;
         }
 
         // Top and Bottom
         for (; side < sides(); ++side) {
-            program.get().uniform("u_Color", COLORS[side]);
-            vertex.draw(4, offset);
+            program.get().uniform("u_Color", colors[side]);
+            vertex.triangles(4, offset);
             offset += 4;
         }
     }

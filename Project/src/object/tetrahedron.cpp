@@ -17,7 +17,7 @@ namespace object::tetrahedron {
             { + 0.1f, + 0.1f, + 0.1f }, // 3
         });
 
-        vertex.indices({
+        vertex.indices(std::initializer_list<math::uvec3>{
             { 0, 1, 2 },
             { 0, 1, 3 },
             { 0, 2, 3 },
@@ -35,8 +35,8 @@ namespace object::tetrahedron {
         program.get().uniform("u_Transform", object::transform(transform));
 
         for (auto i = 0UL; i < sides(); ++i) {
-            program.get().uniform("u_Color", COLORS[i]);
-            vertex.draw(1, i);
+            program.get().uniform("u_Color", colors[i]);
+            vertex.triangles(1, i);
         }
     }
 }

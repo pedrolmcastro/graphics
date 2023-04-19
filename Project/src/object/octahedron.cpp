@@ -20,7 +20,7 @@ namespace object::octahedron {
             { + 0.0f, - 0.1f, + 0.0f }, // 5
         });
 
-        vertex.indices({
+        vertex.indices(std::initializer_list<math::uvec3>{
             // Top
             { 1, 3, 0 }, // Front
             { 4, 2, 0 }, // Back
@@ -45,8 +45,8 @@ namespace object::octahedron {
         program.get().uniform("u_Transform", object::transform(transform));
 
         for (auto i = 0UL; i < sides(); ++i) {
-            program.get().uniform("u_Color", COLORS[i]);
-            vertex.draw(1, i);
+            program.get().uniform("u_Color", colors[i]);
+            vertex.triangles(1, i);
         }
     }
 }

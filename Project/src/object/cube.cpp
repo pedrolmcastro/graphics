@@ -21,7 +21,7 @@ namespace object::cube {
             { + 0.1f, + 0.1f, + 0.1f }, // 7
         });
 
-        vertex.indices({
+        vertex.indices(std::initializer_list<math::uvec3>{
             // Front
             { 0, 4, 6 },
             { 6, 2, 0 },
@@ -58,8 +58,8 @@ namespace object::cube {
         program.get().uniform("u_Transform", object::transform(transform));
 
         for (auto i = 0UL; i < sides(); ++i) {
-            program.get().uniform("u_Color", COLORS[i]);
-            vertex.draw(2, i * 2);
+            program.get().uniform("u_Color", colors[i]);
+            vertex.triangles(2, i * 2);
         }
     }
 }

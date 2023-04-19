@@ -9,6 +9,7 @@
 #include "object/shape.hpp"
 #include "render/vertex.hpp"
 #include "render/program.hpp"
+#include "object/transform.hpp"
 
 
 namespace object {
@@ -20,7 +21,7 @@ namespace object {
 
 
             [[nodiscard]] constexpr auto sides() const noexcept -> std::size_t {
-                return COLORS.size();
+                return colors.size();
             }
 
             auto draw(Transform const& transform) const -> void;
@@ -34,7 +35,7 @@ namespace object {
             render::Vertex vertex = {4, 4};
             std::reference_wrapper<render::Program const> program;
 
-            std::array<color::Color, 4> const COLORS = {
+            std::array<color::Color, 4> colors = {
                 color::RED,
                 color::GREEN,
                 color::BLUE,
