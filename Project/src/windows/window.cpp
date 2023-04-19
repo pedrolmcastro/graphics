@@ -57,6 +57,11 @@ namespace windows {
         resize = std::move(callback);
     }
 
+    auto Window::iskeypressed(int key) noexcept -> bool {
+        auto state = glfwGetKey(base.get(), key);
+        return state == GLFW_PRESS;
+    }
+
 
     auto Window::size() const noexcept -> math::ivec2 {
         auto size = math::ivec2{};
@@ -70,5 +75,10 @@ namespace windows {
 
     auto Window::height() const noexcept -> int {
         return size().y;
+    }
+
+
+    auto Window::rename(char const* name) noexcept -> void {
+        glfwSetWindowTitle(base.get(), name);
     }
 }
