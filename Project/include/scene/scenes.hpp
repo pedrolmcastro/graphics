@@ -19,7 +19,7 @@ namespace scene {
 
     class Scenes final {
     public:
-        Scenes(windows::Window& window, Array scenes);
+        Scenes(windows::Window& window);
 
         auto update(windows::Timestep step) -> void;
 

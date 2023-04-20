@@ -8,7 +8,7 @@
 
 
 namespace scene {
-    template<class Type> concept Scene = std::move_constructible<Type> and requires(Type scene, windows::Window& window, windows::Timestep step) {
+    template<class Type> concept Scene = std::is_default_constructible_v<Type> and requires(Type scene, windows::Window& window, windows::Timestep step) {
         { scene.start(window) };
         { scene.update(window, step) } -> std::convertible_to<bool>;
     };

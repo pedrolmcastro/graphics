@@ -4,17 +4,24 @@
 
 namespace scene {
 
+    // Random normalized device coordinates (in range [-1, 1])
     static auto random_nd() -> float {
         return (random() % 100) / 50.0 - 1.0;
     }
 
-    static auto random_pos() -> math::vec3 {
+    // Random position in normalized device coordinates, in 2d (z = 0).
+    static auto random_2d() -> math::vec3 {
+        return { random_nd(), random_nd(), 0 };
+    }
+
+    // Random position in normalized device coordinates.
+    static auto random_3d() -> math::vec3 {
         return { random_nd(), random_nd(), random_nd() };
     }
 
     Boids::Boids() noexcept {
-        std::generate_n(std::back_inserter(_boids), 100,
-                        [](){return object::Boid(random_pos(), {random_nd(), random_nd(), 0.0});});
+        std::generate_n(std::back_inserter(_boids), Boids::N_INITIAL_BOIDS,
+                        [](){ return object::Boid(random_2d(), random_3d(), random_2d()); });
     }
 
     auto Boids::start(windows::Window& window) noexcept -> void {
@@ -26,7 +33,7 @@ namespace scene {
                 -2 * win_cursor.y / window.height() + 1,
                  0,
             };
-            _boids.push_back(object::Boid(cursor, {random_nd(), random_nd(), 0}));
+            _boids.push_back(object::Boid(cursor, random_3d(), random_2d()));
         });
     }
 

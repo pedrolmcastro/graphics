@@ -7,10 +7,15 @@
 #include "scene/scenes.hpp"
 #include "windows/window.hpp"
 #include "scene/translate.hpp"
+#include "comptime.hpp"
 
 
 namespace scene {
-    Scenes::Scenes(windows::Window& window, Array scenes) : scenes{std::move(scenes)}, window{window} {
+
+    Scenes::Scenes(windows::Window& window) : window{window} {
+        comptime_for<array_size_v<Array>>([&](auto snat){
+            scenes[snat.value].template emplace<snat.value>();
+        });
         std::visit([this](auto& scene) { scene.start(this->window); }, scenes[0]);
     }
 

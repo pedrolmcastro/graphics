@@ -9,7 +9,7 @@
 namespace object {
     class Boid final {
     public:
-        Boid(math::vec3 position, math::vec3 velocity);
+        Boid(math::vec3 position, math::vec3 rotation, math::vec3 velocity);
 
         auto update(windows::Timestep dt) -> void;
 
