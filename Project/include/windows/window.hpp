@@ -26,6 +26,7 @@ namespace windows {
 
         auto onresize(std::function<void(math::ivec2 const&)> callback) noexcept -> void;
 
+        auto onclick(std::function<void(Window&)> callback) noexcept -> void;
 
         [[nodiscard]] auto iskeypressed(int key) const noexcept -> bool;
         [[nodiscard]] auto ismousepressed(int button) const noexcept -> bool;
@@ -44,6 +45,7 @@ namespace windows {
 
     private:
         std::function<void(math::ivec2 const&)> resize;
+        std::function<void(Window&)> click;
 
         std::unique_ptr<GLFWwindow, decltype(&glfwDestroyWindow)> base = {nullptr, &glfwDestroyWindow};
     };

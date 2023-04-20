@@ -11,7 +11,7 @@ auto main() -> int {
     window.onresize(render::viewport);
 
 
-    auto scenes = scene::Scenes{window, {scene::Scale{}, scene::Translate{}, scene::Rotate{}}};
+    auto scenes = scene::Scenes{window, {scene::Scale{}, scene::Translate{}, scene::Rotate{}, scene::Boids{}}};
 
     window.run([&](windows::Timestep step) {
         render::clear(color::BLACK);

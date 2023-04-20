@@ -31,6 +31,14 @@ namespace windows {
             }
         });
 
+        glfwSetMouseButtonCallback(base.get(), [](GLFWwindow* window, int button, int action, int mods) {
+            auto& self = *static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && self.click) {
+                self.click(self);
+            }
+        });
+
 
         glfwMakeContextCurrent(base.get());
     }
@@ -57,6 +65,9 @@ namespace windows {
         resize = std::move(callback);
     }
 
+    auto Window::onclick(std::function<void(Window&)> callback) noexcept -> void {
+        click = std::move(callback);
+    }
 
     auto Window::iskeypressed(int key) const noexcept -> bool {
         auto state = glfwGetKey(base.get(), key);

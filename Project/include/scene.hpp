@@ -6,3 +6,4 @@
 #include "scene/scenes.hpp"
 #include "scene/concept.hpp"
 #include "scene/translate.hpp"
+#include "scene/boids.hpp"
