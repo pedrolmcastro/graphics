@@ -1,9 +1,16 @@
-#include <numeric>
 #include <ranges>
+#include <vector>
+#include <numeric>
+#include <utility>
 
+#include "math.hpp"
 #include "object/boid.hpp"
+#include "windows/window.hpp"
+#include "object/tetrahedron.hpp"
+
 
 namespace views = std::views;
+
 
 namespace object {
     static auto wrap(float& coord, float vel, float radius) -> void {

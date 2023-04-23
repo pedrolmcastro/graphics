@@ -1,4 +1,10 @@
+#include <vector>
+#include <utility>
+
 #include "scene/boids.hpp"
+#include "object/boid.hpp"
+#include "scene/concept.hpp"
+#include "windows/window.hpp"
 #include "structures/hashgrid.hpp"
 
 
@@ -52,7 +58,7 @@ namespace scene {
             -2 * win_cursor.y / window.height() + 1,
              0,
         };
-        
+
         auto nearby = std::vector<std::pair<math::vec3, object::Boid*>>();
         for (auto& boid : _boids) {
             nearby.clear();

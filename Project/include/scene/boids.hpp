@@ -1,8 +1,13 @@
 #pragma once
 
-#include "scene/concept.hpp"
-#include "windows.hpp"
+
+#include <vector>
+#include <utility>
+
 #include "object/boid.hpp"
+#include "scene/concept.hpp"
+#include "windows/window.hpp"
+
 
 namespace scene {
     class Boids final {
@@ -14,9 +19,11 @@ namespace scene {
         // avoid moving the type alltogether.
         Boids(Boids&&) = delete;
 
+
         auto start(windows::Window& window) noexcept -> void;
 
         [[nodiscard]] auto update(windows::Window& window, windows::Timestep dt) noexcept -> bool;
+
 
     private:
         const float BOID_NEIGHBORHOOD_RADIUS = 0.3;
@@ -24,6 +31,7 @@ namespace scene {
 
         std::vector<object::Boid> _boids;
     };
+
 
     static_assert(Scene<Boids>);
 }

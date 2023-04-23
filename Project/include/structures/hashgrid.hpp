@@ -1,13 +1,15 @@
 #pragma once
 
-#include <algorithm>
+
 #include <cmath>
+#include <deque>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 #include <unordered_set>
-#include <deque>
 
 #include "math.hpp"
+
 
 namespace structures {
     template<typename T>
@@ -109,12 +111,14 @@ namespace structures {
             }
         }
 
+
     private:
         math::vec3 _pos;
         math::vec3 _size;
         math::vec3 _cellsize;
         math::ivec3 _ncells;
         std::vector<cell_type> _cells;
+
 
         [[nodiscard]] auto point_to_idx(math::vec3 point) const noexcept -> math::ivec3 {
             return math::ivec3{
