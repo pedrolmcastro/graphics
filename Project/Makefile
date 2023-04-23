@@ -1,4 +1,4 @@
-CXX := g++
+CXX := g++-10
 LDLIBS += -lglfw -lGL -lGLEW -lm
 CXXFLAGS += -std=c++2a -MMD -MP -Iinclude -Ivendor/glm -Wall -Werror -pedantic
 
@@ -19,11 +19,11 @@ obj/%.o : src/%.cpp
 	@printf "CC %s -> %s\n" $< $@
 	@$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-run: $(BIN) 
+run: $(BIN)
 	@$(BIN)
 
 dep:
-	@sudo apt install g++ mesa-common-dev libglew-dev libglfw3-dev
+	@sudo apt install g++-10 mesa-common-dev libglew-dev libglfw3-dev
 	git submodule init
 	git submodule update --recursive
 
